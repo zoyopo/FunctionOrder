@@ -26,7 +26,7 @@ const getCommoentsByArticleId = (articleId) => {
 }
 
 const hadndleArticleItemClick = (articleId) => {
-    return new FunctionPipe()
+    return new FunctionPipeline()
         .next(getArticeDetailById(articleId))
         .next(filterArticleFromResponse)
         .next(setDetailInfo)
