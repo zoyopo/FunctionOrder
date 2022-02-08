@@ -11,7 +11,7 @@ describe('async unrelated', () => {
     it('works', () => {
         let storedArticle = {}
         // expect(sum(1, 1)).toEqual(2);
-        const getArticeDetailById = (articleId) => {
+        const getArticeDetailById = (articleId:number) => {
             // return axios.get({url:'/api/comments/get',params:{articleId}})
             return new Promise((resolve => {
                 setTimeout(() => {
@@ -20,23 +20,19 @@ describe('async unrelated', () => {
             }))
         }
 
-        const getDetailId = (res) => {
-            return res.data.id
-        }
-
-        const filterArticleFromResponse = (res) => {
+        const filterArticleFromResponse = (res:any) => {
             return res.data.article
         }
 
-        const setDetailInfo = (article) => {
+        const setDetailInfo = (article:{}) => {
             setArticle(article)
         }
 
-        const setArticle = (article) => {
+        const setArticle = (article:{}) => {
             return storedArticle = article
         }
 
-        const getCommoentsByArticleId = (articleId) => {
+        const getCommoentsByArticleId = (articleId:number) => {
             // return axios.get({url: '/api/comments/get', params: {articleId}})
             return new Promise((resolve => {
                 setTimeout(() => {
@@ -45,7 +41,7 @@ describe('async unrelated', () => {
             }))
         }
 
-        const hadndleArticleItemClick = (articleId) => {
+        const hadndleArticleItemClick = (articleId:number) => {
             return new FunctionPipeline()
                 .next(getArticeDetailById(articleId))
                 .next(filterArticleFromResponse)
@@ -53,6 +49,7 @@ describe('async unrelated', () => {
                 .next(getCommoentsByArticleId(articleId))
                 .run()
         }
+        hadndleArticleItemClick(211)
 
     });
 });

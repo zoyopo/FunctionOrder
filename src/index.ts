@@ -32,11 +32,15 @@ class FunctionPipeline {
     }
 
     public run() {
-        this.promises.forEach((item, index) => {
-            item.then(res => {
-                this.fnsGroup[index].reduce((prev, curr) => prev ? curr(prev(res)) : curr(res))
+        if(this.promises.length) {
+            this.promises.forEach((item, index) => {
+                item.then(res => {
+                    this.fnsGroup[index].reduce((prev, curr) => prev ? curr(prev(res)) : curr(res))
+                })
             })
-        })
+        }else {
+            this.fns.reduce((prev, curr) => prev ? curr(prev()) : curr())
+        }
     }
 }
 
