@@ -7,7 +7,7 @@
  */
 import FunctionPipeline from '../src';
 
-describe('async unrelated', () => {
+describe('promise unrelated', () => {
     it('works', () => {
         let storedArticle = {}
         // expect(sum(1, 1)).toEqual(2);
@@ -53,3 +53,34 @@ describe('async unrelated', () => {
 
     });
 });
+describe('promise related', () => {
+    it('works', () => {
+        const getArticeDetailById = (articleId:number) => {
+            // return axios.get({url:'/api/comments/get',params:{articleId}})
+            return new Promise((resolve => {
+                setTimeout(() => {
+                    resolve({data: {id: 123, article: {title: 'jest good', content: 'good jest'}}})
+                }, 200)
+            }))
+        }
+
+        const searchContentByTitle = (articleInfo:any) => {
+            // return axios.get({url: '/api/comments/get', params: {articleId}})
+            return new Promise((resolve => {
+                setTimeout(() => {
+                    resolve({data: {}})
+                }, 300)
+            }))
+        }
+
+        const hadndleArticleItemClick = (articleId:number) => {
+            return new FunctionPipeline()
+                .next(getArticeDetailById(articleId))
+                .after(searchContentByTitle)
+
+                .run()
+        }
+        hadndleArticleItemClick(211)
+
+    })
+})
