@@ -6,7 +6,7 @@
  * @date 2022/1/2817:46
  */
 //import FunctionPipeline from '../src';
-const FunctionPipeline = require('../dist/index')
+const {FunctionPipeline} = require('../dist/index')
 let storedArticle = {}
 // expect(sum(1, 1)).toEqual(2);
 const getArticeDetailById = (id) => {
@@ -65,6 +65,7 @@ const hadndleArticleItemClickUnRelated = (articleId) => {
         .run()
 }
 const hadndleArticleItemClickPromiseRelated = (articleId) => {
+    // console.log('hadndleArticleItemClickPromiseRelated',articleId)
     return new FunctionPipeline.default()
         .next(getArticeDetailById(articleId))
         .next(filterAuthorId)
@@ -73,7 +74,7 @@ const hadndleArticleItemClickPromiseRelated = (articleId) => {
         .run()
 }
 
-hadndleArticleItemClickUnRelated(123)
+hadndleArticleItemClickPromiseRelated(123)
 
 
 // describe('promise unrelated', () => {
