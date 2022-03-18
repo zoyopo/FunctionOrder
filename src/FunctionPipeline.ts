@@ -1,9 +1,8 @@
-
 type FnGroups = Function[][]
 type PromiseItem = { fn: Promise<any> }
 
 class FunctionPipeline {
-
+    private results: any[] = []
     private fns: Function[] = []
     private fnsGroup: FnGroups = []
     private promises: PromiseItem[] = []
@@ -13,7 +12,7 @@ class FunctionPipeline {
         return obj && obj instanceof Promise
     }
 
-    public next(fn: Promise<any> | Function) {
+    public lineTo(fn: Promise<any> | Function) {
         if (this.isPromise(fn)) {
             // console.log('this.fns,', this.fns)
             if (this.promises.length && this.fns.length) {
@@ -29,7 +28,7 @@ class FunctionPipeline {
 
 
     private fnExcute(arr: Function[], promiseRes: any) {
-        arr.reduce((prev, curr, index) => {
+        return arr.reduce((prev, curr, index) => {
             if (index === 0) {
                 return curr(promiseRes)
             } else {
@@ -55,10 +54,14 @@ class FunctionPipeline {
         if (this.promises.length) {
             this.promises.forEach((item, index) => {
                 item.fn.then((res: any) => {
-                    index + 1 <= this.fnsGroup.length && this.fnExcute(this.fnsGroup[index], res)
-
+                    if (index + 1 <= this.fnsGroup.length) {
+                        this.results[index] = this.fnExcute(this.fnsGroup[index], res)
+                    } else {
+                        this.results[index] = res
+                    }
                 })
             })
+            // cb(this.results)
         } else {
             this.fns.reduce((prev, curr, index) => {
                 if (index === 0) {
@@ -68,6 +71,7 @@ class FunctionPipeline {
                 }
 
             }, [])
+            // cb(result)
         }
     }
 }

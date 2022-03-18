@@ -20,11 +20,11 @@ const getSquare = (num) => {
 const plus = (plusNums) => {
     return (prevResult) => plusNums + prevResult
 }
-// new FunctionPipeline().next(getSquare(2)).next(plus(3)).next(print('result')).run()
+new FunctionPipeline().next(getSquare(2)).next(plus(3)).run(res=>console.log('getSquare',res))
 
 // #endregion
 
-const getArticeDetailById = (id) => {
+const getArticleDetailById = (id) => {
     return new Promise((resolve => {
         setTimeout(() => {
             resolve({data: {id: 123, article: {title: 'jest good', content: 'good jest', authorId: 'abc'}}})
@@ -79,21 +79,21 @@ const getAuthorById = (id) => {
 
 const hadndleArticleItemClickUnRelated = (articleId) => {
     return new FunctionPipeline()
-        .next(getArticeDetailById(articleId))
-        .next(filterArticleFromResponse)
-        .next(print('article'))
-        .next(getCommentsByArticleId(articleId))
-        .next(getCommentContent)
-        .next(print('getCommentContent'))
-        .run()
+        .lineTo(getArticeDetailById(articleId))
+        .lineTo(filterArticleFromResponse)
+        .lineTo(print('article'))
+        .lineTo(getCommentsByArticleId(articleId))
+        .lineTo(getCommentContent)
+        .lineTo(print('getCommentContent'))
+        .run(res=>console.log('hadndleArticleItemClickUnRelated',res))
 }
 const hadndleArticleItemClickPromiseRelated = (articleId) => {
     // console.log('hadndleArticleItemClickPromiseRelated',articleId)
     return new FunctionPipeline()
-        .next(getArticeDetailById(articleId))
-        .next(filterAuthorId)
-        .next(getAuthorById)
-        .next(print('name'))
+        .lineTo(getArticeDetailById(articleId))
+        .lineTo(filterAuthorId)
+        .lineTo(getAuthorById)
+        .lineTo(print('name'))
         .run()
 }
 
