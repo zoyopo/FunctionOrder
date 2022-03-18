@@ -5,12 +5,26 @@
  * @author zhangyunpeng0126
  * @date 2022/1/2817:46
  */
-//import FunctionPipeline from '../src';
+
 const {FunctionPipeline} = require('../dist/index')
-let storedArticle = {}
-// expect(sum(1, 1)).toEqual(2);
+const print = (tag) => {
+    return (name) => {
+        console.log(tag, name)
+    }
+}
+// #region simple function chain call
+const getSquare = (num) => {
+    return () => Math.pow(num, 2)
+}
+
+const plus = (plusNums) => {
+    return (prevResult) => plusNums + prevResult
+}
+// new FunctionPipeline().next(getSquare(2)).next(plus(3)).next(print('result')).run()
+
+// #endregion
+
 const getArticeDetailById = (id) => {
-    // return axios.get({url:'/api/comments/get',params:{articleId}})
     return new Promise((resolve => {
         setTimeout(() => {
             resolve({data: {id: 123, article: {title: 'jest good', content: 'good jest', authorId: 'abc'}}})
@@ -22,23 +36,30 @@ const filterArticleFromResponse = (res) => {
     return res.data.article
 }
 
-const setDetailInfo = (article) => {
-    console.log('article', article)
-    setArticle(article)
-}
 
-const setArticle = (article) => {
-    return storedArticle = article
-}
-
-const getCommoentsByArticleId = (id) => {
+const getCommentsByArticleId = (id) => {
     // return axios.get({url: '/api/comments/get', params: {articleId}})
     return new Promise((resolve => {
         setTimeout(() => {
-            resolve({data: {comments: []}})
+            resolve({
+                data: {
+                    comments: [
+                        {commenter: 'test0', content: 'yoyoyo'},
+                        {
+                            commenter: 'test1',
+                            content: 'heiheihei'
+                        }
+                    ]
+                }
+            })
         }, 300)
     }))
 }
+
+const getCommentContent = (commentsInfo) => {
+    return commentsInfo.data.comments.map(item => item.content).join(',')
+}
+
 
 const filterAuthorId = (res) => {
     return res.data.article.authorId
@@ -57,24 +78,26 @@ const getAuthorById = (id) => {
 }
 
 const hadndleArticleItemClickUnRelated = (articleId) => {
-    return new FunctionPipeline.default()
+    return new FunctionPipeline()
         .next(getArticeDetailById(articleId))
         .next(filterArticleFromResponse)
-        .next(setDetailInfo)
-        .next(getCommoentsByArticleId(articleId))
+        .next(print('article'))
+        .next(getCommentsByArticleId(articleId))
+        .next(getCommentContent)
+        .next(print('getCommentContent'))
         .run()
 }
 const hadndleArticleItemClickPromiseRelated = (articleId) => {
     // console.log('hadndleArticleItemClickPromiseRelated',articleId)
-    return new FunctionPipeline.default()
+    return new FunctionPipeline()
         .next(getArticeDetailById(articleId))
         .next(filterAuthorId)
         .next(getAuthorById)
-        .next((name)=>{console.log('name',name)})
+        .next(print('name'))
         .run()
 }
 
-hadndleArticleItemClickPromiseRelated(123)
+hadndleArticleItemClickUnRelated(123)
 
 
 // describe('promise unrelated', () => {
@@ -84,31 +107,6 @@ hadndleArticleItemClickPromiseRelated(123)
 // });
 // describe('promise related', () => {
 //     it('works', () => {
-//         const getArticeDetailById = (articleId) => {
-//             // return axios.get({url:'/api/comments/get',params:{articleId}})
-//             return new Promise((resolve => {
-//                 setTimeout(() => {
-//                     resolve({data: {id: 123, article: {title: 'jest good', content: 'good jest'}}})
-//                 }, 200)
-//             }))
-//         }
-//
-//         const searchContentByTitle = (articleInfo) => {
-//             // return axios.get({url: '/api/comments/get', params: {articleId}})
-//             return new Promise((resolve => {
-//                 setTimeout(() => {
-//                     resolve({data: {}})
-//                 }, 300)
-//             }))
-//         }
-//
-//         const hadndleArticleItemClick = (articleId) => {
-//             return new FunctionPipeline()
-//                 .next(getArticeDetailById(articleId))
-//                 .next(searchContentByTitle)
-//                 .run()
-//         }
-//         hadndleArticleItemClick(211)
-//
+
 //     })
 // })
