@@ -7,24 +7,30 @@
  */
 
 const {FunctionPipeline} = require('../dist/index')
+
+//#region situation 1 simple Function
+
 const print = (tag) => {
     return (name) => {
         console.log(tag, name)
     }
 }
-// #region simple function chain call
+
 const getSquare = (num) => {
-    return () => Math.pow(num, 2)
+    return ()=> Math.pow(num, 2)
 }
 
 const plus = (plusNums) => {
     return (prevResult) => plusNums + prevResult
 }
-new FunctionPipeline().next(getSquare(2)).next(plus(3)).run(res=>console.log('getSquare',res))
 
-// #endregion
+new FunctionPipeline().next(getSquare(2)).next(plus(3)).next(print('result')) // result 7
 
-const getArticleDetailById = (id) => {
+//#endregion
+
+
+//#region situation 2:unrelated Promise
+const getArticeDetailById = (id) => {
     return new Promise((resolve => {
         setTimeout(() => {
             resolve({data: {id: 123, article: {title: 'jest good', content: 'good jest', authorId: 'abc'}}})
@@ -36,9 +42,8 @@ const filterArticleFromResponse = (res) => {
     return res.data.article
 }
 
-
 const getCommentsByArticleId = (id) => {
-    // return axios.get({url: '/api/comments/get', params: {articleId}})
+
     return new Promise((resolve => {
         setTimeout(() => {
             resolve({
@@ -55,10 +60,24 @@ const getCommentsByArticleId = (id) => {
         }, 300)
     }))
 }
-
 const getCommentContent = (commentsInfo) => {
     return commentsInfo.data.comments.map(item => item.content).join(',')
 }
+const hadndleArticleItemClickUnRelated = (articleId) => {
+    return new FunctionPipeline()
+        .next(getArticeDetailById(articleId))
+        .next(filterArticleFromResponse)
+        .next(print('article'))
+        .next(getCommentsByArticleId(articleId))
+        .next(getCommentContent)
+        .next(print('getCommentContent'))
+        .run()
+}
+//hadndleArticleItemClickPromiseRelated(123)
+
+//#endregion
+
+//#region related promise
 
 
 const filterAuthorId = (res) => {
@@ -77,36 +96,29 @@ const getAuthorById = (id) => {
     }))
 }
 
-const hadndleArticleItemClickUnRelated = (articleId) => {
-    return new FunctionPipeline()
-        .lineTo(getArticeDetailById(articleId))
-        .lineTo(filterArticleFromResponse)
-        .lineTo(print('article'))
-        .lineTo(getCommentsByArticleId(articleId))
-        .lineTo(getCommentContent)
-        .lineTo(print('getCommentContent'))
-        .run(res=>console.log('hadndleArticleItemClickUnRelated',res))
-}
+
 const hadndleArticleItemClickPromiseRelated = (articleId) => {
-    // console.log('hadndleArticleItemClickPromiseRelated',articleId)
     return new FunctionPipeline()
-        .lineTo(getArticeDetailById(articleId))
-        .lineTo(filterAuthorId)
-        .lineTo(getAuthorById)
-        .lineTo(print('name'))
+        .next(getArticeDetailById(articleId))
+        .next(filterAuthorId)
+        .next(getAuthorById)
+        .next(print('name'))
         .run()
 }
 
-hadndleArticleItemClickUnRelated(123)
+hadndleArticleItemClickPromiseRelated(123) // name { data: { author: { name: '刘慈欣' } } }
+//#ednregion
+
+// hadndleArticleItemClickUnRelated(123)
 
 
-// describe('promise unrelated', () => {
-//     it('works', () => {
-//
-//     });
-// });
+describe('promise unrelated', () => {
+    it('works', () => {
+
+    });
+});
 // describe('promise related', () => {
 //     it('works', () => {
-
+//
 //     })
 // })

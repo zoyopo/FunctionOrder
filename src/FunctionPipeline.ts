@@ -1,5 +1,5 @@
 type FnGroups = Function[][]
-type PromiseItem = { fn: Promise<any> }
+type PromiseItem = { promise: Promise<any>, type?: string }
 
 class FunctionPipeline {
     private results: any[] = []
@@ -7,19 +7,22 @@ class FunctionPipeline {
     private fnsGroup: FnGroups = []
     private promises: PromiseItem[] = []
     private promisesCount = 0
+    // @ts-ignore
+    public rootParams: {} = {}
 
     private isPromise(obj: any): boolean {
         return obj && obj instanceof Promise
     }
 
-    public lineTo(fn: Promise<any> | Function) {
+
+    public next(fn: Promise<any> | Function) {
         if (this.isPromise(fn)) {
             // console.log('this.fns,', this.fns)
             if (this.promises.length && this.fns.length) {
                 this.fnsGroup[this.promisesCount++] = this.fns
                 this.fns = []
             }
-            this.promises.push({fn: fn as Promise<any>})
+            this.promises.push({promise: fn as Promise<any>})
         } else {
             this.fns.push(fn as Function)
         }
@@ -27,9 +30,14 @@ class FunctionPipeline {
     }
 
 
-    private fnExcute(arr: Function[], promiseRes: any) {
+    private fnExecute(arr: Function[], promiseRes: any) {
+
         return arr.reduce((prev, curr, index) => {
+            if (!arr.length) {
+                return
+            }
             if (index === 0) {
+                //console.log('promiseRes',promiseRes)
                 return curr(promiseRes)
             } else {
                 if (this.isPromise(prev)) {
@@ -37,7 +45,15 @@ class FunctionPipeline {
                     arr = []
                     //@ts-ignore
                     prev.then(prevRes => {
-                        this.fnExcute(restFns, prevRes)
+                        this.fnExecute(restFns, prevRes)
+                    })
+                } else if (Array.isArray(prev) && prev.every(item => this.isPromise(item))) {
+                    //  console.log('Array.isArray(prev) && prev.every(item => this.isPromise(item))')
+                    const restFns = arr.slice(index, arr.length)
+                    arr = []
+                    //@ts-ignore
+                    Promise.all(prev).then(prevRes => {
+                        this.fnExecute(restFns, prevRes)
                     })
                 } else {
                     return curr(prev)
@@ -47,30 +63,33 @@ class FunctionPipeline {
         }, [])
     }
 
-    public run() {
+    public run(params: any) {
+
+        this.rootParams = params
         if (this.fns.length) {
+            // const isFirstFnResultPromise = this.isPromise(this.fns[0]())
+            // if (isFirstFnResultPromise) {
+            //     this.promises.unshift({promise: this.fns[0](params)})
+            //     this.fns = this.fns.slice(1)
+            // }
             this.fnsGroup.push(this.fns)
         }
+
         if (this.promises.length) {
-            this.promises.forEach((item, index) => {
-                item.fn.then((res: any) => {
-                    if (index + 1 <= this.fnsGroup.length) {
-                        this.results[index] = this.fnExcute(this.fnsGroup[index], res)
+            Promise.all(this.promises.map(promiseItem => promiseItem.promise)).then((resArray: any[]) => {
+                for (let index in resArray) {
+                    const res = resArray[index]
+
+                    if (Number(index) + 1 <= this.fnsGroup.length) {
+
+                        this.results[index] = this.fnExecute(this.fnsGroup[index], res)
                     } else {
                         this.results[index] = res
                     }
-                })
-            })
-            // cb(this.results)
-        } else {
-            this.fns.reduce((prev, curr, index) => {
-                if (index === 0) {
-                    return curr()
-                } else {
-                    return curr(prev)
                 }
-
-            }, [])
+            })
+        } else {
+            this.fnExecute(this.fns, this.rootParams)
             // cb(result)
         }
     }
