@@ -23,7 +23,7 @@ export default function createFunctionPipelineByClass<T extends NormalObj>(cls: 
     // }
     methodNames.forEach((methodName) => {
         if (rootPromiseFnNames && rootPromiseFnNames.includes(methodName)) {
-            fplInstance = fplInstance.next(instance[methodName as string](fplInstance.rootParams))
+            fplInstance = fplInstance.next({type:'root',promise:instance[methodName as string]})
         } else {
             fplInstance = fplInstance.next((value: any) => {
                 const val = instance[methodName as string](value)

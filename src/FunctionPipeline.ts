@@ -1,5 +1,6 @@
 type FnGroups = Function[][]
-type PromiseItem = { promise: Promise<any>, type?: string }
+type RootPromise = (value?: any) => Promise<any>
+type PromiseItem = { promise: RootPromise | Promise<any>, type?: string }
 
 class FunctionPipeline {
     private results: any[] = []
@@ -7,22 +8,22 @@ class FunctionPipeline {
     private fnsGroup: FnGroups = []
     private promises: PromiseItem[] = []
     private promisesCount = 0
-    // @ts-ignore
-    public rootParams: {} = {}
 
     private isPromise(obj: any): boolean {
         return obj && obj instanceof Promise
     }
 
+    private isObject(obj: PromiseItem): boolean {
+        return obj && Object.prototype.toString.call(obj) === '[object Object]' && Boolean(obj.promise)
+    }
 
-    public next(fn: Promise<any> | Function) {
-        if (this.isPromise(fn)) {
-            // console.log('this.fns,', this.fns)
+    public next(fn: Promise<any> | Function | PromiseItem) {
+        if (this.isPromise(fn) || this.isObject(fn as PromiseItem)) {
             if (this.promises.length && this.fns.length) {
                 this.fnsGroup[this.promisesCount++] = this.fns
                 this.fns = []
             }
-            this.promises.push({promise: fn as Promise<any>})
+            this.promises.push(this.isPromise(fn) ? {promise: fn as Promise<any>} : fn as PromiseItem)
         } else {
             this.fns.push(fn as Function)
         }
@@ -31,13 +32,11 @@ class FunctionPipeline {
 
 
     private fnExecute(arr: Function[], promiseRes: any) {
-
         return arr.reduce((prev, curr, index) => {
             if (!arr.length) {
                 return
             }
             if (index === 0) {
-                //console.log('promiseRes',promiseRes)
                 return curr(promiseRes)
             } else {
                 if (this.isPromise(prev)) {
@@ -48,7 +47,6 @@ class FunctionPipeline {
                         this.fnExecute(restFns, prevRes)
                     })
                 } else if (Array.isArray(prev) && prev.every(item => this.isPromise(item))) {
-                    //  console.log('Array.isArray(prev) && prev.every(item => this.isPromise(item))')
                     const restFns = arr.slice(index, arr.length)
                     arr = []
                     //@ts-ignore
@@ -64,17 +62,10 @@ class FunctionPipeline {
     }
 
     public run(params: any) {
-
-        this.rootParams = params
         if (this.fns.length) {
-            // const isFirstFnResultPromise = this.isPromise(this.fns[0]())
-            // if (isFirstFnResultPromise) {
-            //     this.promises.unshift({promise: this.fns[0](params)})
-            //     this.fns = this.fns.slice(1)
-            // }
             this.fnsGroup.push(this.fns)
         }
-
+        this.promises = this.promises.map(item => ({promise: item.type === 'root' ? (item.promise as RootPromise)(params) : item.promise}))
         if (this.promises.length) {
             Promise.all(this.promises.map(promiseItem => promiseItem.promise)).then((resArray: any[]) => {
                 for (let index in resArray) {
@@ -89,7 +80,7 @@ class FunctionPipeline {
                 }
             })
         } else {
-            this.fnExecute(this.fns, this.rootParams)
+            this.fnExecute(this.fns, params)
             // cb(result)
         }
     }
