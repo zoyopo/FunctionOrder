@@ -16,7 +16,7 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ### situation 1:receive pure functions
 
-```ts
+```javascript
 import {transformClassToFunctionPipeline} from 'functionPipe'
 // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
 class JustFnAction {
@@ -46,7 +46,7 @@ globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
 
 ### situation 2: receive pure functions and function return promise
-```ts
+```javascript
 import {transformClassToFunctionPipeline} from 'functionPipe'
 // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
 class FnReturnPromiseAction {
@@ -78,8 +78,126 @@ setTimeout(()=>{
 
 ```
 
+### Situation3: independent Promise execute when run method called
+```javascript
+import {transformClassToFunctionPipeline} from 'functionPipe'
+// or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+class PromiseIndependentAction {
+    init() {
+        return {    
+            // Declare the functions's names that need to store the result
+            stateStoredFnNames: ['storeMotoName', 'storeLocation'],
+            // Declare the functions's names that the returned result is promise and has no pre dependency, which need to be executed when run method called
+            rootPromiseFnNames: ['getPopularMotoByBrand', 'getLocationByBrand']
+        }
+    }
+
+    getPopularMotoByBrand(brand) {
+        return new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'honda cm300',
+                    'suzuki': 'gsx250r'
+                }
+                resolve(map[brand])
+            }, 30)
+
+        }))
+    }
+
+    storeMotoName(res) {
+        return res
+    }
+
+    getLocationByBrand(brand) {
+        return new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'Japan',
+                    'suzuki': 'Japan',
+                    'BMW': 'Ger'
+                }
+                resolve(map[brand])
+            }, 30)
+        }))
+    }
+
+    storeLocation(res) {
+        return res
+    }
+}
 
 
+const setState = (fn) => {
+    globalThis.store = fn(globalThis.store || {})
+}
+const fpl = transformClassToFunctionPipeline(PromiseIndependentAction, setState)
+describe('Action.promise independent', () => {
+    it('works', done => {
+        fpl.run('suzuki')
+        setTimeout(() => {
+            expect(globalThis.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
+            expect(globalThis.store["PromiseIndependentAction/storeLocation"]).toBe('Japan')
+            done()
+        }, 1000)
+    })
+})
+```
+
+### Situation4: independent Promise execute when run method called
+
+```javascript
+import {transformClassToFunctionPipeline} from 'functionPipe'
+// or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+class PromiseDependOnBeforePromiseAction {
+    init() {
+        return {           
+            rootPromiseFnNames: ['getPopularMotoByBrand']
+        }
+    }
+
+    getPopularMotoByBrand(brand) {
+        return new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'honda cm300',
+                    'suzuki': 'gsx250r'
+                }
+                resolve(map[brand])
+            }, 30)
+
+        }))
+    }
+
+    getWeightOfMotoName(motoName) {
+        return new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda cm300': '170kg',
+                    'gsx250r': '180kg'
+                }
+                resolve(map[motoName])
+            }, 30)
+        }))
+    }
+
+}
 
 
+const setState = (fn) => {
+    globalThis.store = fn(globalThis.store || {})
+}
+const fpl = transformClassToFunctionPipeline(PromiseDependOnBeforePromiseAction, setState)
+
+describe('Action.promise dependent', () => {
+    it('works', done => {
+        fpl.run('suzuki')
+        setTimeout(() => {
+            expect(global.store["PromiseDependOnBeforePromiseAction/getActionResult"]).toBe('180kg')
+            done()
+        }, 1000)
+
+    })
+})
+```
 

@@ -33,7 +33,6 @@ class PromiseDependOnBeforeAction {
         }))
     }
 
-
 }
 
 
