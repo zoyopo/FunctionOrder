@@ -144,7 +144,7 @@ describe('Action.promise independent', () => {
 })
 ```
 
-### Situation4: independent Promise execute when run method called
+### Situation4:  Promise depend on Promise before
 
 ```javascript
 import {transformClassToFunctionPipeline} from 'functionPipe'
