@@ -16,12 +16,10 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ### situation 1:receive pure functions
 
-#### function format
-
 ```ts
-import {FunctionPipeline} from 'functionPipe'
+import {transformClassToFunctionPipeline} from 'functionPipe'
 // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
-class ActionJustFn {
+class JustFnAction {
 
     plus(num) {
         return 1 + num
@@ -39,13 +37,47 @@ class ActionJustFn {
 const setState = (fn) => {
     globalThis.store = fn(globalThis.store || {})
 }
-const fpl = transformClassToFunctionPipeline(ActionJustFn, setState)
+const fpl = transformClassToFunctionPipeline(JustFnAction, setState)
 // 2 is plus function param
 fpl.run(2) 
-// ActionJustFn as nameSpace
+// className ActionJustFn as nameSpace
 // getActionResult was key of result
 globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
+
+### situation 2: receive pure functions and function return promise
+```ts
+import {transformClassToFunctionPipeline} from 'functionPipe'
+// or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+class FnReturnPromiseAction {
+    plus(num) {
+        return 1 + num
+    }
+    square(num) {
+        return Math.pow(num, 2)
+    }
+    minus(num) {
+        return new Promise((resolve => {
+            setTimeout(() => {
+                resolve(num - 2)
+            }, 200)
+
+        }))
+    }
+}
+
+const setState = (fn) => {
+    globalThis.store = fn(globalThis.store || {})
+}
+const fpl = transformClassToFunctionPipeline(ActionJustFn, setState)
+fpl.run(2) 
+setTimeout(()=>{
+    console.log(globalThis.store["FnReturnPromiseAction/getActionResult"] )
+    // 7    
+},300)
+
+```
+
 
 
 
