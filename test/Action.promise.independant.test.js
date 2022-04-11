@@ -1,6 +1,6 @@
 const {transformClassToFunctionPipeline} = require('../dist/index')
 
-class Action {
+class PromiseIndependentAction {
     init() {
         return {
             stateStoredFnNames: ['storeMotoName', 'storeLocation'],
@@ -47,16 +47,15 @@ class Action {
 const setState = (fn) => {
     global.store = fn(global.store || {})
 }
-const fpl = transformClassToFunctionPipeline(Action, setState)
+const fpl = transformClassToFunctionPipeline(PromiseIndependentAction, setState)
 
 describe('Action.promise independent', () => {
     it('works', done => {
         fpl.run('suzuki')
         setTimeout(() => {
-            expect(global.store.storeMotoName).toBe('gsx250r')
-            expect(global.store.storeLocation).toBe('Japan')
+            expect(global.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
+            expect(global.store["PromiseIndependentAction/getActionResult"]).toBe('Japan')
             done()
         }, 1000)
-
     })
 })

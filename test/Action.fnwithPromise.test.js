@@ -1,7 +1,7 @@
 const {transformClassToFunctionPipeline} = require('../dist/index')
 
 
-class Action {
+class ActionOfAllFeature {
 
     init() {
         return {
@@ -84,25 +84,22 @@ class Action {
         return p
     }
 
-    getResult2(res) {
-        return res
-    }
 
 }
 
 const setState = (fn) => {
     global.store = fn(global.store || {})
 }
-const fpl = transformClassToFunctionPipeline(Action, setState)
+const fpl = transformClassToFunctionPipeline(ActionOfAllFeature, setState)
 
 describe('Action', () => {
     it('works', done => {
         fpl.run(2)
         setTimeout(() => {
-            expect(global.store.getResult2).toEqual(
+            expect(global.store["ActionOfAllFeature/getActionResult"]).toEqual(
                 {data: {id: 123, article: {title: 'jest good123', content: 'good jest', authorId: 'abc'}}}
             )
-            expect(global.store.getResult).toEqual(['宇宙出版社', ['老李', '郭敬明', '韩寒']])
+            expect(global.store["ActionOfAllFeature/getResult"]).toEqual(['宇宙出版社', ['老李', '郭敬明', '韩寒']])
             done()
         }, 2000)
     })

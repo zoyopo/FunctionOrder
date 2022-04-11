@@ -1,6 +1,6 @@
 const {transformClassToFunctionPipeline} = require('../dist/index')
 
-class Action {
+class PromiseDependOnBeforeAction {
     init() {
         return {
             stateStoredFnNames: ['promiseDependentOperate'],
@@ -33,22 +33,20 @@ class Action {
         }))
     }
 
-    promiseDependentOperate(res) {
-        return res
-    }
+
 }
 
 
 const setState = (fn) => {
     global.store = fn(global.store || {})
 }
-const fpl = transformClassToFunctionPipeline(Action, setState)
+const fpl = transformClassToFunctionPipeline(PromiseDependOnBeforeAction, setState)
 
 describe('Action.promise dependent', () => {
     it('works', done => {
         fpl.run('suzuki')
         setTimeout(() => {
-            expect(global.store.promiseDependentOperate).toBe('180kg')
+            expect(global.store["PromiseDependOnBeforeAction/getActionResult"]).toBe('180kg')
             done()
         }, 1000)
 
