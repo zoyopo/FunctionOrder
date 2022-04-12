@@ -46,9 +46,9 @@
     const setState = (fn) => {
         globalThis.store = fn(globalThis.store || {})
     }
-    const fpl = transformClassToFunctionPipeline(JustFnAction, setState)
+    const fo = transformClassToFunctionPipeline(JustFnAction, setState)
     // 2 作为`plus`函数参数
-    fpl.run(2) 
+    fo.run(2) 
     // 类名ActionJustFn作为名称空间
     // getActionResult是最终结果的key
     globalThis.store["ActionJustFn/getActionResult"] // 7
@@ -78,8 +78,8 @@
     const setState = (fn) => {
         globalThis.store = fn(globalThis.store || {})
     }
-    const fpl = transformClassToFunctionPipeline(ActionJustFn, setState)
-    fpl.run(2) 
+    const fo = transformClassToFunctionPipeline(ActionJustFn, setState)
+    fo.run(2) 
     setTimeout(()=>{
         console.log(globalThis.store["FnReturnPromiseAction/getActionResult"] )
         // 7    
@@ -140,10 +140,10 @@
     const setState = (fn) => {
         globalThis.store = fn(globalThis.store || {})
     }
-    const fpl = transformClassToFunctionPipeline(PromiseIndependentAction, setState)
+    const fo = transformClassToFunctionPipeline(PromiseIndependentAction, setState)
     describe('Action.promise independent', () => {
         it('works', done => {
-            fpl.run('suzuki')
+            fo.run('suzuki')
             setTimeout(() => {
                 expect(globalThis.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
                 expect(globalThis.store["PromiseIndependentAction/storeLocation"]).toBe('Japan')
@@ -196,11 +196,11 @@
     const setState = (fn) => {
         globalThis.store = fn(globalThis.store || {})
     }
-    const fpl = transformClassToFunctionPipeline(PromiseDependOnBeforePromiseAction, setState)
+    const fo = transformClassToFunctionPipeline(PromiseDependOnBeforePromiseAction, setState)
     
     describe('Action.promise dependent', () => {
         it('works', done => {
-            fpl.run('suzuki')
+            fo.run('suzuki')
             setTimeout(() => {
                 expect(global.store["PromiseDependOnBeforePromiseAction/getActionResult"]).toBe('180kg')
                 done()
@@ -227,9 +227,9 @@
         }
     }
         function App() {
-        const {actionState, fplIns} = useActionState({action: SimpleAction})
+        const {actionState, foIns} = useActionState({action: SimpleAction})
         useEffect(() => {
-            fplIns.run(2)
+            foIns.run(2)
         }, [])
     
         useEffect(() => {
