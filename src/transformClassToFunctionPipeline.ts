@@ -22,12 +22,12 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
     // if(!instance['init']){
     //     throw new Error('init method is required')
     // }
-    let rootPromiseFnNames: string[]
-    let stateStoredFnNames: string[]
+    let promiseExecutedImmediately: string[]
+    let needReturnValStoredMethods: string[]
     if (instance[KeyMethods.init]) {
         const initResult =instance[KeyMethods.init]()
-        rootPromiseFnNames = initResult.rootPromiseFnNames
-        stateStoredFnNames = initResult.stateStoredFnNames
+        promiseExecutedImmediately = initResult.promiseExecutedImmediately
+        needReturnValStoredMethods = initResult.stateStoredFnNames
     }
 
 
@@ -39,12 +39,12 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
         return res
     }
     methodNames.forEach((methodName) => {
-        if (rootPromiseFnNames && rootPromiseFnNames.includes(methodName as string)) {
+        if (promiseExecutedImmediately && promiseExecutedImmediately.includes(methodName as string)) {
             fplInstance = fplInstance.next({type: 'root', promise: instance[methodName as string]})
         } else {
             fplInstance = fplInstance.next((value: any) => {
                 const val = instance[methodName as string](value)
-                const isMethodNameNeedStore = (stateStoredFnNames && stateStoredFnNames.includes(methodName as string)) || (methodName === KeyMethods.getActionResult)
+                const isMethodNameNeedStore = (needReturnValStoredMethods && needReturnValStoredMethods.includes(methodName as string)) || (methodName === KeyMethods.getActionResult)
                 //@ts-ignore
                 if (isMethodNameNeedStore && setState) {
                     setState((prev: NormalObj) => ({...prev, [`${nameSpace}/${methodName as string}`]: val}))

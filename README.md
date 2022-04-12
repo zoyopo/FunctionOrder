@@ -107,9 +107,9 @@ lead to scattered logic and difficult code testing and maintenance.
         init() {
             return {
                 // Declare the functions's names that need to store the result
-                stateStoredFnNames: ['storeMotoName', 'storeLocation'],
+                needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
                 // Declare the functions's names that the returned result is promise and has no pre dependency, which need to be executed when run method called
-                rootPromiseFnNames: ['getPopularMotoByBrand', 'getLocationByBrand']
+                promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
     
@@ -173,7 +173,7 @@ lead to scattered logic and difficult code testing and maintenance.
     class PromiseDependOnBeforePromiseAction {
         init() {
             return {
-                rootPromiseFnNames: ['getPopularMotoByBrand']
+                promiseExecutedImmediately: ['getPopularMotoByBrand']
             }
         }
     

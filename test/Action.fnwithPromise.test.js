@@ -5,8 +5,8 @@ class ActionOfAllFeature {
 
     init() {
         return {
-            rootPromiseFnNames: ['getArticeDetailById', 'getArticeDetailById2'],
-            stateStoredFnNames: ['getResult2', 'getResult']
+            promiseExecutedImmediately: ['getArticeDetailById', 'getArticeDetailById2'],
+            needReturnValStoredMethods: ['getResult2', 'getResult']
         }
     }
 

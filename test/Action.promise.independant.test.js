@@ -3,8 +3,8 @@ const {transformClassToFunctionPipeline} = require('../dist/index')
 class PromiseIndependentAction {
     init() {
         return {
-            stateStoredFnNames: ['storeMotoName', 'storeLocation'],
-            rootPromiseFnNames: ['getPopularMotoByBrand', 'getLocationByBrand']
+            needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
+            promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
         }
     }
 

@@ -3,7 +3,7 @@ const {transformClassToFunctionPipeline} = require('../dist/index')
 class ActionJustFn {
     init() {
         return {
-            stateStoredFnNames: ['operateResult']
+            needReturnValStoredMethods: ['operateResult']
         }
     }
 

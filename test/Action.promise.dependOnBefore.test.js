@@ -3,8 +3,8 @@ const {transformClassToFunctionPipeline} = require('../dist/index')
 class PromiseDependOnBeforeAction {
     init() {
         return {
-            stateStoredFnNames: ['promiseDependentOperate'],
-            rootPromiseFnNames: ['getPopularMotoByBrand']
+            needReturnValStoredMethods: ['promiseDependentOperate'],
+            promiseExecutedImmediately: ['getPopularMotoByBrand']
         }
     }
 

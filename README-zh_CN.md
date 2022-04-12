@@ -95,9 +95,9 @@
         init() {
             return {    
                 // 声明需要存储结果的函数名
-                stateStoredFnNames: ['storeMotoName', 'storeLocation'],
+                needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
                 // 声明用run方法时执行无依赖`Promise`的函数名
-                rootPromiseFnNames: ['getPopularMotoByBrand', 'getLocationByBrand']
+                promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
     
@@ -161,7 +161,7 @@
     class PromiseDependOnBeforePromiseAction {
         init() {
             return {           
-                rootPromiseFnNames: ['getPopularMotoByBrand']
+                promiseExecutedImmediately: ['getPopularMotoByBrand']
             }
         }
     
