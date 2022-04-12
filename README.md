@@ -1,7 +1,7 @@
 # FunctionOrder
+![logo](https://pic.imgdb.cn/item/625594a3239250f7c50ea0fc.jpg)
 
 [简体中文](https://github.com/zoyopo/FunctionPipeline/blob/master/README-zh_CN.md)
-![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
 
 It provides a more standardized, efficient and easy to test functional programming method.
 
@@ -23,6 +23,10 @@ lead to scattered logic and difficult code testing and maintenance.
 - Support react hooks
 
 - Support Vue hooks (to be developed)
+
+## how it works
+
+![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
 
 ## quick start
 

@@ -1,5 +1,5 @@
 # FunctionOrder
-![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
+![logo](https://pic.imgdb.cn/item/625594a3239250f7c50ea0fc.jpg)
 提供一种更规范，高效，易于测试的函数式编程方式。
 
 ## 为何创建此库
@@ -19,6 +19,9 @@
 ```bash
     npm i function-order -S   // or yarn add function-order -S   
 ```
+
+## 运行机制
+![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
 
 ## 一些约定
 - 所有的函数都需要进行返回
