@@ -205,7 +205,21 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ```jsx
     import {useActionState} from 'functionPipe'
-    function App() {
+
+    class SimpleAction{
+        plus(num) {
+            return 1 + num
+        }
+    
+        square(num) {
+            return Math.pow(num, 2)
+        }
+    
+        minus(num) {
+            return num - 2
+        }
+    }
+        function App() {
         const {actionState, fplIns} = useActionState({action: SimpleAction})
         useEffect(() => {
             fplIns.run(2)
