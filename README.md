@@ -18,8 +18,8 @@ lead to scattered logic and difficult code testing and maintenance.
 ### situation 1:receive pure functions
 
 ```javascript
-    import {transformClassToFunctionPipeline} from 'functionPipe'
-    // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+    import {transformClassToFunctionPipeline} from 'function-order'
+    // or const {FunctionPipeline}  = require('function-order') in nodejs
     class JustFnAction {
     
         plus(num) {
@@ -48,8 +48,8 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ### situation 2: receive pure functions and function return promise
 ```javascript
-    import {transformClassToFunctionPipeline} from 'functionPipe'
-    // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+    import {transformClassToFunctionPipeline} from 'function-order'
+    // or const {FunctionPipeline}  = require('function-order') in nodejs
     class FnReturnPromiseAction {
         plus(num) {
             return 1 + num
@@ -81,8 +81,8 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ### Situation3: independent Promise execute when run method called
 ```javascript
-    import {transformClassToFunctionPipeline} from 'functionPipe'
-    // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+    import {transformClassToFunctionPipeline} from 'function-order'
+    // or const {FunctionPipeline}  = require('function-order') in nodejs
     class PromiseIndependentAction {
         init() {
             return {    
@@ -148,8 +148,8 @@ lead to scattered logic and difficult code testing and maintenance.
 ### Situation4:  Promise depend on Promise before
 
 ```javascript
-    import {transformClassToFunctionPipeline} from 'functionPipe'
-    // or const {FunctionPipeline}  = require('functionpipeline') in nodejs
+    import {transformClassToFunctionPipeline} from 'function-order'
+    // or const {FunctionPipeline}  = require('function-order') in nodejs
     class PromiseDependOnBeforePromiseAction {
         init() {
             return {           
@@ -204,8 +204,7 @@ lead to scattered logic and difficult code testing and maintenance.
 ## Integration with react(react custom hooks)
 
 ```jsx
-    import {useActionState} from 'functionPipe'
-
+    import {useActionState} from 'function-order'
     class SimpleAction{
         plus(num) {
             return 1 + num
