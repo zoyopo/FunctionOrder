@@ -1,6 +1,6 @@
 # FunctionPipeline
 
-A lib offer good ways for function programing in javascript (node and browser)
+A lib offer ways like pipeline for function programing in javascript (node or browser)。
 
 ## why create the lib
 
