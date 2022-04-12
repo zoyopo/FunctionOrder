@@ -30,7 +30,7 @@
 - 想要立即执行的的`Promise`要在`init`函数中以`promiseExecutedImmediately`进行声明其所处的方法
 - 立即执行的的`Promise`所处的方法的参数从`run`方法中获取
 - 立即执行的的`Promise`会并行执行，当他们执行完毕，才会执行各自后面的函数
-- 后续的
+
 
 ## 基本使用
 
