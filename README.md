@@ -2,19 +2,26 @@
 
 [简体中文](https://github.com/zoyopo/FunctionPipeline/blob/master/README-zh_CN.md)
 
-A lib offer ways like pipeline for function programing in javascript (node or browser)。
+It provides a more standardized, efficient and easy to test functional programming method.
 
 ## why create the lib
 
 Front-end development is always accompanied by events, IO operations and logic processing. These restrictions usually
 lead to scattered logic and difficult code testing and maintenance.
 
-## feature
+##Benefits
 
-- receive promise and pure functions, and execute a business process according to the receiving order.
-- will support integrated state management, which can store the return values of some functions
-- react hooks support
-- vue hooks will be supported
+- Describe a business logic with classes
+
+- Support integration status management
+
+- Convert logic from imperative to declarative
+
+- Easy to test
+
+- Support react hooks
+
+- Support Vue hooks (to be developed)
 
 ## quick start
 
