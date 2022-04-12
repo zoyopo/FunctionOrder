@@ -1,6 +1,7 @@
 # FunctionOrder
 
 [简体中文](https://github.com/zoyopo/FunctionPipeline/blob/master/README-zh_CN.md)
+![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
 
 It provides a more standardized, efficient and easy to test functional programming method.
 
@@ -28,6 +29,12 @@ lead to scattered logic and difficult code testing and maintenance.
 ```bash
     npm i function-order -S   // or yarn add function-order -S   
 ```
+## Some conventions
+- All functions need to be returned
+- Synchronous and non-immediately executed 'Promise' functions are executed in the order declared within 'class'
+- The 'Promise' that wants to be executed immediately declares its method in the 'init' function as 'promiseExecutedImmediately'
+- The parameters of the method in which the 'Promise' of immediate execution is executed are taken from the 'run' method
+- Immediately executed 'Promises' are executed in parallel, and when they are finished, the functions that follow them are executed
 
 ## how to use
 

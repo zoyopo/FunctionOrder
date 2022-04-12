@@ -1,5 +1,5 @@
 # FunctionOrder
-
+![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
 提供一种更规范，高效，易于测试的函数式编程方式。
 
 ## 为何创建此库
@@ -20,6 +20,13 @@
     npm i function-order -S   // or yarn add function-order -S   
 ```
 
+## 一些约定
+- 所有的函数都需要进行返回
+- 同步函数和非立即执行的的`Promise`函数按照`class`内的声明顺序进行执行
+- 想要立即执行的的`Promise`要在`init`函数中以`promiseExecutedImmediately`进行声明其所处的方法
+- 立即执行的的`Promise`所处的方法的参数从`run`方法中获取
+- 立即执行的的`Promise`会并行执行，当他们执行完毕，才会执行各自后面的函数
+- 后续的
 
 ## 基本使用
 
