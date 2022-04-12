@@ -1,5 +1,5 @@
 import FunctionPipeline from "./FunctionPipeline";
 import transformClassToFunctionPipeline from "./transformClassToFunctionPipeline";
-// import useActionState from "./useActionState";
+import useActionState from "./useActionState";
 
-export {FunctionPipeline, transformClassToFunctionPipeline}
+export {FunctionPipeline, transformClassToFunctionPipeline, useActionState}

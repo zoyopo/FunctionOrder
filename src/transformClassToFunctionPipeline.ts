@@ -5,7 +5,7 @@ interface Type<T> extends Function {
 }
 
 type NormalObj = { [props: string]: any }
-type TObj = { [props: string]: any, getActionResult: (res: any) => any }
+export type TObj = { [props: string]: any, getActionResult?: (res: any) => any }
 type SetState = (values: NormalObj) => void
 
 enum KeyMethods {
