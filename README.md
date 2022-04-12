@@ -8,7 +8,7 @@ It provides a more standardized, efficient and easy to test functional programmi
 ## why create the lib
 
 Front-end development is always accompanied by events, IO operations and logic processing. These restrictions usually
-lead to scattered logic and difficult code testing and maintenance.
+lead to scattered logic and difficult code testing and maintenance. 
 
 ## Benefits
 
