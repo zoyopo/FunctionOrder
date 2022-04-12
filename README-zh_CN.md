@@ -21,7 +21,7 @@
 ```
 
 ## 运行机制
-![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
+![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
 ## 一些约定
 - 所有的函数都需要进行返回

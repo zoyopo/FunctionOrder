@@ -26,7 +26,7 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ## how it works
 
-![流程图](https://pic.imgdb.cn/item/6255917c239250f7c5090c5e.jpg)
+![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
 ## quick start
 
