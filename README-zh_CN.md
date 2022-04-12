@@ -1,5 +1,5 @@
 # FunctionOrder
-<p><center>![logo](https://pic.imgdb.cn/item/625594a3239250f7c50ea0fc.jpg)</center></p>
+<p style="text-align: center"><img src="https://pic.imgdb.cn/item/625594a3239250f7c50ea0fc.jpg" alt=""></p>
 
 提供一种更规范，高效，易于测试的函数式编程方式。
 
