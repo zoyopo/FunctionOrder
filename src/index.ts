@@ -1,5 +1,4 @@
 import FunctionPipeline from "./FunctionPipeline";
-import transformClassToFunctionPipeline from "./transformClassToFunctionPipeline";
-import useActionState from "./useActionState";
+import transformClassToFunctionPipeline, {TObj} from "./transformClassToFunctionPipeline";
 
-export {FunctionPipeline, transformClassToFunctionPipeline, useActionState}
+export {FunctionPipeline, transformClassToFunctionPipeline, TObj}

@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "GPL v3.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -29,8 +29,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "test:coverage": "tsdx test --coverage"
   },
   "peerDependencies": {},
   "husky": {

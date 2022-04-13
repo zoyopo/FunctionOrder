@@ -17,8 +17,13 @@
 
 ## 快速开始
 
-```bash
+### nodejs
+```bash 
     npm i function-order -S   // or yarn add function-order -S   
+```
+### react
+```bash
+    npm i react-function-order -S   // or yarn add react-function-order -S   
 ```
 
 ## 运行机制
@@ -35,7 +40,7 @@
 ## 基本使用
 
 ### 情景1：接收纯函数
-
+#### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
@@ -64,8 +69,31 @@
     // getActionResult是最终结果的key
     globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
+#### react
 
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: JustFnAction})
+        useEffect(() => {
+            foIns.run(2)
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)
+            // actionState Change {}
+            // actionState Change {SimpleAction/getActionResult: 7}
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['JustFnAction/getActionResult']}
+            </div>
+        )
+    }
+```
 ### 情景2：接受纯函数和函数返回`Promise`
+#### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
@@ -98,7 +126,32 @@
 
 ```
 
+#### react
+
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: FnReturnPromiseAction})
+        useEffect(() => {
+            foIns.run(2)
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)
+            // actionState Change {}
+            // actionState Change {SimpleAction/getActionResult: 7}
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['FnReturnPromiseAction/getActionResult']}
+            </div>
+        )
+    }
+```
+
 ### Situation3: 调用run方法时执行无依赖`Promise`
+#### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
@@ -163,9 +216,33 @@
         })
     })
 ```
+#### react
 
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
+        useEffect(() => {
+            foIns.run('suzuki')
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)     
+            //{
+            // PromiseIndependentAction/storeMotoName:"gsx250r",
+            //  PromiseIndependentAction/storeLocation:'Japan'
+            // }
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['PromiseIndependentAction/storeMotoName']}
+            </div>
+        )
+    }
+```
 ### Situation4:  Promise 依赖于前面的 Promise
-
+#### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
@@ -220,40 +297,31 @@
         })
     })
 ```
-## 和react状态管理集成(react 自定义hooks)
+#### react
+
 
 ```jsx
-    import {useActionState} from 'function-order'
-    class SimpleAction{
-        plus(num) {
-            return 1 + num
-        }
-    
-        square(num) {
-            return Math.pow(num, 2)
-        }
-    
-        minus(num) {
-            return num - 2
-        }
-    }
-        function App() {
-        const {actionState, foIns} = useActionState({action: SimpleAction})
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: PromiseDependOnBeforePromiseAction})
         useEffect(() => {
-            foIns.run(2)
+            foIns.run('suzuki')
         }, [])
     
         useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
+            console.log('actionState Change', actionState)     
+            //{
+            // PromiseDependOnBeforePromiseAction/getActionResult:"180kg"        
+            // }
         }, [actionState])
     
         return (
             <div className="App">
-                {actionState['SimpleAction/getActionResult']}
+                {actionState['PromiseDependOnBeforePromiseAction/getActionResult']}
             </div>
         )
     }
 ```
+
+
 

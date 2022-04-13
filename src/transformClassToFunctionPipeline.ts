@@ -27,7 +27,7 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
     if (instance[KeyMethods.init]) {
         const initResult =instance[KeyMethods.init]()
         promiseExecutedImmediately = initResult.promiseExecutedImmediately
-        needReturnValStoredMethods = initResult.stateStoredFnNames
+        needReturnValStoredMethods = initResult.needReturnValStoredMethods
     }
 
 

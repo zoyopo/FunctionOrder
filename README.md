@@ -30,9 +30,15 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ## quick start
 
-```bash
+### nodejs
+```bash 
     npm i function-order -S   // or yarn add function-order -S   
 ```
+### react
+```bash
+    npm i react-function-order -S   // or yarn add react-function-order -S   
+```
+
 ## Some conventions
 - All functions need to be returned
 - Synchronous and non-immediately executed 'Promise' functions are executed in the order declared within 'class'
@@ -43,6 +49,8 @@ lead to scattered logic and difficult code testing and maintenance.
 ## how to use
 
 ### situation 1:receive pure functions
+
+#### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -73,10 +81,36 @@ lead to scattered logic and difficult code testing and maintenance.
     globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
 
+#### react
+
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: JustFnAction})
+        useEffect(() => {
+            foIns.run(2)
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)
+            // actionState Change {}
+            // actionState Change {SimpleAction/getActionResult: 7}
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['JustFnAction/getActionResult']}
+            </div>
+        )
+    }
+```
+
 ### situation 2: receive pure functions and function return promise
 
+#### nodejs
+
 ```javascript
-    import {transformClassToFunctionPipeline} from 'function-order'
+   import {useFunctionOrderState} from 'react-function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
     class FnReturnPromiseAction {
         plus(num) {
@@ -109,7 +143,33 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ```
 
+#### react
+
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: FnReturnPromiseAction})
+        useEffect(() => {
+            foIns.run(2)
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)
+            // actionState Change {}
+            // actionState Change {SimpleAction/getActionResult: 7}
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['FnReturnPromiseAction/getActionResult']}
+            </div>
+        )
+    }
+```
+
 ### Situation3: independent Promise execute when run method called
+
+#### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -176,7 +236,37 @@ lead to scattered logic and difficult code testing and maintenance.
     })
 ```
 
+
+
+#### react
+
+```jsx
+   import {useFunctionOrderState} from 'react-function-order'
+    function App() {
+        const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
+        useEffect(() => {
+            foIns.run('suzuki')
+        }, [])
+    
+        useEffect(() => {
+            console.log('actionState Change', actionState)     
+            //{
+            // PromiseIndependentAction/storeMotoName:"gsx250r",
+            //  PromiseIndependentAction/storeLocation:'Japan'
+            // }
+        }, [actionState])
+    
+        return (
+            <div className="App">
+                {actionState['PromiseIndependentAction/storeMotoName']}
+            </div>
+        )
+    }
+```
+
 ### Situation4:  Promise depend on Promise before
+
+#### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -231,42 +321,30 @@ lead to scattered logic and difficult code testing and maintenance.
         })
     })
 ```
+#### react 
 
-## Integration with react(react custom hooks)
 
 ```jsx
-    import {useActionState} from 'function-order'
-    class SimpleAction {
-        plus(num) {
-            return 1 + num
-        }
-    
-        square(num) {
-            return Math.pow(num, 2)
-        }
-    
-        minus(num) {
-            return num - 2
-        }
-    }
-    
+   import {useFunctionOrderState} from 'react-function-order'
     function App() {
-        const {actionState, foIns} = useActionState({action: SimpleAction})
+        const {actionState, foIns} = useFunctionOrderState({action: PromiseDependOnBeforePromiseAction})
         useEffect(() => {
-            foIns.run(2)
+            foIns.run('suzuki')
         }, [])
     
         useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
+            console.log('actionState Change', actionState)     
+            //{
+            // PromiseDependOnBeforePromiseAction/getActionResult:"180kg"        
+            // }
         }, [actionState])
     
         return (
             <div className="App">
-                {actionState['SimpleAction/getActionResult']}
+                {actionState['PromiseDependOnBeforePromiseAction/getActionResult']}
             </div>
         )
     }
 ```
+
 
