@@ -61,7 +61,7 @@ class FunctionPipeline {
         }, [])
     }
 
-    public run(params: any) {
+    public run(params?: any) {
         if (this.fns.length) {
             this.fnsGroup.push(this.fns)
         }
