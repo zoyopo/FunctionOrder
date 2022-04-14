@@ -110,7 +110,7 @@ lead to scattered logic and difficult code testing and maintenance.
 #### nodejs
 
 ```javascript
-   import {useFunctionOrderState} from 'react-function-order'
+   import {transformClassToFunctionPipeline} from 'function-order'
     // or const {FunctionPipeline}  = require('function-order') in nodejs
     class FnReturnPromiseAction {
         plus(num) {
