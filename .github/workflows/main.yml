@@ -19,9 +19,5 @@ jobs:
       - name: npm install, make test-coverage
         run: |
           yarn
-          make test-coverage
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          yarn test:coverage
+          yarn coveralls && rm -rf ./coverage
