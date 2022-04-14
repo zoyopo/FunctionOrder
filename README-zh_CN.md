@@ -26,8 +26,14 @@
     npm i react-function-order -S   // or yarn add react-function-order -S   
 ```
 
+## 在线demo(react)
+
+[codeSandbox](https://codesandbox.io/s/functionorder-demo-4tgzj1?file=/src/App.tsx)
+
 ## 运行机制
 ![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
+
+
 
 ## 一些约定
 - 所有的函数都需要进行返回

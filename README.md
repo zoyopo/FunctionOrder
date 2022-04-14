@@ -24,9 +24,7 @@ lead to scattered logic and difficult code testing and maintenance.
 
 - Support Vue hooks (to be developed)
 
-## how it works
 
-![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
 ## quick start
 
@@ -38,6 +36,13 @@ lead to scattered logic and difficult code testing and maintenance.
 ```bash
     npm i react-function-order -S   // or yarn add react-function-order -S   
 ```
+## online demo(react)
+
+[codeSandbox](https://codesandbox.io/s/functionorder-demo-4tgzj1?file=/src/App.tsx)
+
+## how it works
+
+![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
 ## Some conventions
 - All functions need to be returned
