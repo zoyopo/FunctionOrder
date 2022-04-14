@@ -45,11 +45,11 @@
 
 ## 基本使用
 
-### 情景1：接收纯函数
+### 情景1：同步函数
 #### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class JustFnAction {
     
         plus(num) {
@@ -98,11 +98,11 @@
         )
     }
 ```
-### 情景2：接受纯函数和函数返回`Promise`
+### 情景2：同步函数和异步函数
 #### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class FnReturnPromiseAction {
         plus(num) {
             return 1 + num
@@ -156,17 +156,17 @@
     }
 ```
 
-### Situation3: 调用run方法时执行无依赖`Promise`
+### Situation3: 扁平的异步函数
 #### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class PromiseIndependentAction {
         init() {
             return {    
                 // 声明需要存储结果的函数名
                 needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
-                // 声明用run方法时执行无依赖`Promise`的函数名
+                // 声明扁平的异步函数名
                 promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
@@ -247,18 +247,12 @@
         )
     }
 ```
-### Situation4:  Promise 依赖于前面的 Promise
+### Situation4:  异步函数依赖于前面的异步函数
 #### nodejs
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
-    class PromiseDependOnBeforePromiseAction {
-        init() {
-            return {           
-                promiseExecutedImmediately: ['getPopularMotoByBrand']
-            }
-        }
-    
+  
+    class PromiseDependOnBeforePromiseAction {    
         getPopularMotoByBrand(brand) {
             return new Promise((resolve => {
                 setTimeout(() => {

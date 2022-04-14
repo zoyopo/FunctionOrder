@@ -53,13 +53,13 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ## how to use
 
-### situation 1:receive pure functions
+### situation 1:all sync pure functions
 
 #### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class JustFnAction {
     
         plus(num) {
@@ -110,13 +110,13 @@ lead to scattered logic and difficult code testing and maintenance.
     }
 ```
 
-### situation 2: receive pure functions and function return promise
+### situation 2:  sync functions with async functions
 
 #### nodejs
 
 ```javascript
    import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class FnReturnPromiseAction {
         plus(num) {
             return 1 + num
@@ -172,19 +172,19 @@ lead to scattered logic and difficult code testing and maintenance.
     }
 ```
 
-### Situation3: independent Promise execute when run method called
+### Situation3: flat async functions 
 
 #### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class PromiseIndependentAction {
         init() {
             return {
                 // Declare the functions's names that need to store the result
                 needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
-                // Declare the functions's names that the returned result is promise and has no pre dependency, which need to be executed when run method called
+                // Declare flat async functions name
                 promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
@@ -269,19 +269,15 @@ lead to scattered logic and difficult code testing and maintenance.
     } 
 ```
 
-### Situation4:  Promise depend on Promise before
+### Situation4:  async function depend on async function before
 
 #### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-    // or const {FunctionPipeline}  = require('function-order') in nodejs
+  
     class PromiseDependOnBeforePromiseAction {
-        init() {
-            return {
-                promiseExecutedImmediately: ['getPopularMotoByBrand']
-            }
-        }
+  
     
         getPopularMotoByBrand(brand) {
             return new Promise((resolve => {
