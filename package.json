@@ -30,7 +30,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "test:coverage": "tsdx test --coverage",
-    "coveralls": "coveralls < coverage/lcov.info"
+    "coveralls": "coveralls < ./coverage/lcov.info"
   },
   "peerDependencies": {},
   "husky": {
