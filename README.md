@@ -38,7 +38,7 @@ lead to scattered logic and difficult code testing and maintenance.
 ```
 ## online demo(react)
 
-[codeSandbox](https://codesandbox.io/s/functionorder-demo-4tgzj1?file=/src/App.tsx)
+[An Example about select the item category to get the items and the remaining ](https://codesandbox.io/s/functionorder-demo-4tgzj1?file=/src/App.tsx)
 
 ## how it works
 
