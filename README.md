@@ -261,7 +261,7 @@ lead to scattered logic and difficult code testing and maintenance.
                 {actionState['PromiseIndependentAction/storeMotoName']}
             </div>
         )
-    }
+    } 
 ```
 
 ### Situation4:  Promise depend on Promise before
