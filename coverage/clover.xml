@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1649846517014" clover="3.2.0">
-  <project timestamp="1649846517014" name="All files">
-    <metrics statements="86" coveredstatements="0" conditionals="43" coveredconditionals="0" methods="21" coveredmethods="0" elements="150" coveredelements="0" complexity="0" loc="86" ncloc="86" packages="1" files="4" classes="4"/>
+<coverage generated="1649916740383" clover="3.2.0">
+  <project timestamp="1649916740383" name="All files">
+    <metrics statements="79" coveredstatements="0" conditionals="43" coveredconditionals="0" methods="20" coveredmethods="0" elements="142" coveredelements="0" complexity="0" loc="79" ncloc="79" packages="1" files="3" classes="3"/>
     <file name="FunctionPipeline.ts" path="D:\workSpace\FunctionPipeline\src\FunctionPipeline.ts">
       <metrics statements="49" coveredstatements="0" conditionals="30" coveredconditionals="0" methods="13" coveredmethods="0"/>
       <line num="5" count="0" type="stmt"/>
@@ -89,16 +89,6 @@
       <line num="50" count="0" type="stmt"/>
       <line num="52" count="0" type="stmt"/>
       <line num="56" count="0" type="stmt"/>
-    </file>
-    <file name="useActionState.ts" path="D:\workSpace\FunctionPipeline\src\useActionState.ts">
-      <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <line num="2" count="0" type="stmt"/>
-      <line num="3" count="0" type="stmt"/>
-      <line num="12" count="0" type="stmt"/>
-      <line num="13" count="0" type="stmt"/>
-      <line num="14" count="0" type="stmt"/>
-      <line num="15" count="0" type="stmt"/>
-      <line num="18" count="0" type="stmt"/>
     </file>
   </project>
 </coverage>

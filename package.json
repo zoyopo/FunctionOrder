@@ -29,7 +29,8 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "test:coverage": "tsdx test --coverage"
+    "test:coverage": "tsdx test --coverage",
+    "coveralls": "coveralls < coverage/lcov.info"
   },
   "peerDependencies": {},
   "husky": {
@@ -67,7 +68,6 @@
     "tslib": "^2.3.1",
     "typescript": "^4.5.5",
     "@types/react": "^18.0.1",
-    "istanbul":"^0.4.5",
     "coveralls": "^3.1.1"
   }
 }
