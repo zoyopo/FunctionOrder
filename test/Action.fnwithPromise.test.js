@@ -1,12 +1,12 @@
-const {transformClassToFunctionPipeline} = require('../dist/index')
+const {transformClassToFunctionPipeline,InitKeys} = require('../dist/index')
 
 
 class ActionOfAllFeature {
 
     init() {
         return {
-            promiseExecutedImmediately: ['getArticeDetailById', 'getArticeDetailById2'],
-            needReturnValStoredMethods: ['getResult2', 'getResult']
+            [InitKeys.flatAsyncNames]: ['getArticeDetailById', 'getArticeDetailById2'],
+            [InitKeys.saveResultNames]: ['getResult2', 'getResult']
         }
     }
 

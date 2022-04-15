@@ -13,6 +13,11 @@ enum KeyMethods {
     init = 'init'
 }
 
+export enum InitKeys {
+    flatAsyncNames = "flatAsyncNames",
+    saveResultNames = "saveResultNames"
+}
+
 export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<T>, setState?: SetState) {
     const instance = new cls()
     const nameSpace = instance.constructor.name
@@ -22,12 +27,12 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
     // if(!instance['init']){
     //     throw new Error('init method is required')
     // }
-    let promiseExecutedImmediately: string[]
-    let needReturnValStoredMethods: string[]
+    let _flatAsyncNames: string[]
+    let _saveResultNames: string[]
     if (instance[KeyMethods.init]) {
-        const initResult =instance[KeyMethods.init]()
-        promiseExecutedImmediately = initResult.promiseExecutedImmediately
-        needReturnValStoredMethods = initResult.needReturnValStoredMethods
+        const initResult = instance[KeyMethods.init]()
+        _flatAsyncNames = initResult[InitKeys.flatAsyncNames]
+        _saveResultNames = initResult[InitKeys.saveResultNames]
     }
 
 
@@ -39,12 +44,12 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
         return res
     }
     methodNames.forEach((methodName) => {
-        if (promiseExecutedImmediately && promiseExecutedImmediately.includes(methodName as string)) {
+        if (_flatAsyncNames && _flatAsyncNames.includes(methodName as string)) {
             fplInstance = fplInstance.next({type: 'root', promise: instance[methodName as string]})
         } else {
             fplInstance = fplInstance.next((value: any) => {
                 const val = instance[methodName as string](value)
-                const isMethodNameNeedStore = (needReturnValStoredMethods && needReturnValStoredMethods.includes(methodName as string)) || (methodName === KeyMethods.getActionResult)
+                const isMethodNameNeedStore = (_saveResultNames && _saveResultNames.includes(methodName as string)) || (methodName === KeyMethods.getActionResult)
                 //@ts-ignore
                 if (isMethodNameNeedStore && setState) {
                     setState((prev: NormalObj) => ({...prev, [`${nameSpace}/${methodName as string}`]: val}))

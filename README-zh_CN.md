@@ -159,15 +159,15 @@
 ### Situation3: 扁平的异步函数
 #### nodejs
 ```javascript
-    import {transformClassToFunctionPipeline} from 'function-order'
+    import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
   
     class PromiseIndependentAction {
         init() {
             return {    
                 // 声明需要存储结果的函数名
-                needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
+                [InitKeys.saveResultNames]: ['storeMotoName', 'storeLocation'],
                 // 声明扁平的异步函数名
-                promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
+                [InitKeys.flatAsyncNames]: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
     
@@ -225,7 +225,7 @@
 #### react
 
 ```jsx
-   import {useFunctionOrderState} from 'react-function-order'
+   import {useFunctionOrderState,InitKeys} from 'react-function-order'
     function App() {
         const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
         useEffect(() => {

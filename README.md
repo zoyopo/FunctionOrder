@@ -177,15 +177,15 @@ lead to scattered logic and difficult code testing and maintenance.
 #### nodejs
 
 ```javascript
-    import {transformClassToFunctionPipeline} from 'function-order'
+    import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
   
     class PromiseIndependentAction {
         init() {
             return {
                 // Declare the functions's names that need to store the result
-                needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
+                [InitKeys.saveResultNames]: ['storeMotoName', 'storeLocation'],
                 // Declare flat async functions name
-                promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
+                [InitKeys.flatAsyncNames]: ['getPopularMotoByBrand', 'getLocationByBrand']
             }
         }
     
@@ -246,7 +246,7 @@ lead to scattered logic and difficult code testing and maintenance.
 #### react
 
 ```jsx
-   import {useFunctionOrderState} from 'react-function-order'
+   import {useFunctionOrderState,InitKeys} from 'react-function-order'
     function App() {
         const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
         useEffect(() => {

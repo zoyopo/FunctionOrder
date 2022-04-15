@@ -1,10 +1,10 @@
-const {transformClassToFunctionPipeline} = require('../dist/index')
+const {transformClassToFunctionPipeline,InitKeys} = require('../dist/index')
 
 class PromiseIndependentAction {
     init() {
         return {
-            needReturnValStoredMethods: ['storeMotoName', 'storeLocation'],
-            promiseExecutedImmediately: ['getPopularMotoByBrand', 'getLocationByBrand']
+            [InitKeys.saveResultNames]: ['storeMotoName', 'storeLocation'],
+            [InitKeys.flatAsyncNames]: ['getPopularMotoByBrand', 'getLocationByBrand']
         }
     }
 

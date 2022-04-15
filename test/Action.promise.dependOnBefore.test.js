@@ -1,10 +1,10 @@
-const {transformClassToFunctionPipeline} = require('../dist/index')
+const {transformClassToFunctionPipeline,InitKeys} = require('../dist/index')
 
 class PromiseDependOnBeforeAction {
     init() {
         return {
-            needReturnValStoredMethods: ['promiseDependentOperate'],
-            promiseExecutedImmediately: ['getPopularMotoByBrand']
+            [InitKeys.saveResultNames]: ['promiseDependentOperate'],
+            [InitKeys.flatAsyncNames]: ['getPopularMotoByBrand']
         }
     }
 

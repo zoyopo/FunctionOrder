@@ -1,9 +1,9 @@
-const {transformClassToFunctionPipeline} = require('../dist/index')
+const {transformClassToFunctionPipeline,InitKeys} = require('../dist/index')
 
 class ActionJustFn {
     init() {
         return {
-            needReturnValStoredMethods: ['operateResult']
+            [InitKeys.saveResultNames]: ['operateResult']
         }
     }
 
