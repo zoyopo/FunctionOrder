@@ -1,5 +1,5 @@
 {
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "GPL v3.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,7 +19,8 @@
     "pure function",
     "order control",
     "promise",
-    "react hooks"
+    "react hooks",
+    "mvc"
   ],
   "scripts": {
     "start": "tsdx watch",
