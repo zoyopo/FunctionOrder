@@ -1,5 +1,5 @@
 # FunctionOrder
-![logo](https://pic.imgdb.cn/item/625594a3239250f7c50ea0fc.jpg)
+![logo](https://pic.imgdb.cn/item/6259587d239250f7c5fafab0.png)
 
 [简体中文](https://github.com/zoyopo/FunctionPipeline/blob/master/README-zh_CN.md)
 
