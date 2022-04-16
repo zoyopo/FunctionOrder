@@ -15,38 +15,34 @@
 - 支持 react hooks
 - 支持 vue hooks (待开发)
 
-## 快速开始
+## 在react总使用
 
-### nodejs
-```bash 
-    npm i function-order -S   // or yarn add function-order -S   
-```
-### react
-```bash
-    npm i react-function-order -S   // or yarn add react-function-order -S   
-```
+[请访问这个仓库](https://github.com/zoyopo/react-function-order)
+
 
 ## 在线demo(react)
 
-[选中物品分类获取物品和剩余的例子(codesandbox需翻墙)](https://codesandbox.io/s/functionorder-demo-f1kqwz)
+[在线超市(codesandbox)](https://codesandbox.io/s/functionorder-demo-f1kqwz)
+
+## 快速开始
+
+```bash 
+    npm i function-order -S   // or yarn add function-order -S   
+```
+
+
+
 
 ## 运行机制
 ![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
 
 
-## 一些约定
-- 所有的函数都需要进行返回
-- 同步函数和非立即执行的的`Promise`函数按照`class`内的声明顺序进行执行
-- 想要立即执行的的`Promise`要在`init`函数中以`promiseExecutedImmediately`进行声明其所处的方法
-- 立即执行的的`Promise`所处的方法的参数从`run`方法中获取
-- 立即执行的的`Promise`会并行执行，当他们执行完毕，才会执行各自后面的函数 
-
 
 ## 基本使用
 
 ### 情景1：同步函数
-#### nodejs
+
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
   
@@ -75,31 +71,9 @@
     // getActionResult是最终结果的key
     globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
-#### react
 
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: JustFnAction})
-        useEffect(() => {
-            foIns.run(2)
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['JustFnAction/getActionResult']}
-            </div>
-        )
-    }
-```
 ### 情景2：同步函数和异步函数
-#### nodejs
+
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
   
@@ -132,32 +106,10 @@
 
 ```
 
-#### react
 
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: FnReturnPromiseAction})
-        useEffect(() => {
-            foIns.run(2)
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['FnReturnPromiseAction/getActionResult']}
-            </div>
-        )
-    }
-```
 
 ### Situation3: 扁平的异步函数
-#### nodejs
+
 ```javascript
     import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
   
@@ -222,33 +174,9 @@
         })
     })
 ```
-#### react
 
-```jsx
-   import {useFunctionOrderState,InitKeys} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
-        useEffect(() => {
-            foIns.run('suzuki')
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)     
-            //{
-            // PromiseIndependentAction/storeMotoName:"gsx250r",
-            //  PromiseIndependentAction/storeLocation:'Japan'
-            // }
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['PromiseIndependentAction/storeMotoName']}
-            </div>
-        )
-    }
-```
 ### Situation4:  异步函数依赖于前面的异步函数
-#### nodejs
+
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
   
@@ -296,31 +224,6 @@
     
         })
     })
-```
-#### react
-
-
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: PromiseDependOnBeforePromiseAction})
-        useEffect(() => {
-            foIns.run('suzuki')
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)     
-            //{
-            // PromiseDependOnBeforePromiseAction/getActionResult:"180kg"        
-            // }
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['PromiseDependOnBeforePromiseAction/getActionResult']}
-            </div>
-        )
-    }
 ```
 
 

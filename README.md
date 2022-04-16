@@ -25,37 +25,32 @@ lead to scattered logic and difficult code testing and maintenance.
 - Support Vue hooks (to be developed)
 
 
+## Use in react
+
+[Please visit this repo](https://github.com/zoyopo/react-function-order)
+
+
+## online demo(react)
+
+[Online Supermarket ](https://codesandbox.io/s/functionorder-demo-f1kqwz)
+
 
 ## quick start
 
-### nodejs
 ```bash 
     npm i function-order -S   // or yarn add function-order -S   
 ```
-### react
-```bash
-    npm i react-function-order -S   // or yarn add react-function-order -S   
-```
-## online demo(react)
-
-[An Example about select the item category to get the items and the remaining ](https://codesandbox.io/s/functionorder-demo-f1kqwz)
 
 ## how it works
 
 ![流程图](https://pic.imgdb.cn/item/6255959b239250f7c5103c3b.jpg)
 
-## Some conventions
-- All functions need to be returned
-- Synchronous and non-immediately executed 'Promise' functions are executed in the order declared within 'class'
-- The 'Promise' that wants to be executed immediately declares its method in the 'init' function as 'promiseExecutedImmediately'
-- The parameters of the method in which the 'Promise' of immediate execution is executed are taken from the 'run' method
-- Immediately executed 'Promises' are executed in parallel, and when they are finished, the functions that follow them are executed
+
 
 ## how to use
 
 ### situation 1:all sync pure functions
 
-#### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -86,33 +81,9 @@ lead to scattered logic and difficult code testing and maintenance.
     globalThis.store["ActionJustFn/getActionResult"] // 7
 ```
 
-#### react
-
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: JustFnAction})
-        useEffect(() => {
-            foIns.run(2)
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['JustFnAction/getActionResult']}
-            </div>
-        )
-    }
-```
 
 ### situation 2:  sync functions with async functions
 
-#### nodejs
 
 ```javascript
    import {transformClassToFunctionPipeline} from 'function-order'
@@ -148,33 +119,10 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ```
 
-#### react
-
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: FnReturnPromiseAction})
-        useEffect(() => {
-            foIns.run(2)
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)
-            // actionState Change {}
-            // actionState Change {SimpleAction/getActionResult: 7}
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['FnReturnPromiseAction/getActionResult']}
-            </div>
-        )
-    }
-```
 
 ### Situation3: flat async functions 
 
-#### nodejs
+
 
 ```javascript
     import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
@@ -243,35 +191,10 @@ lead to scattered logic and difficult code testing and maintenance.
 
 
 
-#### react
 
-```jsx
-   import {useFunctionOrderState,InitKeys} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: PromiseIndependentAction})
-        useEffect(() => {
-            foIns.run('suzuki')
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)     
-            //{
-            // PromiseIndependentAction/storeMotoName:"gsx250r",
-            //  PromiseIndependentAction/storeLocation:'Japan'
-            // }
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['PromiseIndependentAction/storeMotoName']}
-            </div>
-        )
-    } 
-```
 
 ### Situation4:  async function depend on async function before
 
-#### nodejs
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -322,30 +245,6 @@ lead to scattered logic and difficult code testing and maintenance.
         })
     })
 ```
-#### react 
 
-
-```jsx
-   import {useFunctionOrderState} from 'react-function-order'
-    function App() {
-        const {actionState, foIns} = useFunctionOrderState({action: PromiseDependOnBeforePromiseAction})
-        useEffect(() => {
-            foIns.run('suzuki')
-        }, [])
-    
-        useEffect(() => {
-            console.log('actionState Change', actionState)     
-            //{
-            // PromiseDependOnBeforePromiseAction/getActionResult:"180kg"        
-            // }
-        }, [actionState])
-    
-        return (
-            <div className="App">
-                {actionState['PromiseDependOnBeforePromiseAction/getActionResult']}
-            </div>
-        )
-    }
-```
 
 
