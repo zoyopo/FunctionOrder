@@ -96,10 +96,10 @@ describe('Action', () => {
     it('works', done => {
         fpl.run(2)
         setTimeout(() => {
-            expect(global.store["ActionOfAllFeature/getActionResult"]).toEqual(
+            expect(global.store["getActionResult"]).toEqual(
                 {data: {id: 123, article: {title: 'jest good123', content: 'good jest', authorId: 'abc'}}}
             )
-            expect(global.store["ActionOfAllFeature/getResult"]).toEqual(['宇宙出版社', ['老李', '郭敬明', '韩寒']])
+            expect(global.store["getResult"]).toEqual(['宇宙出版社', ['老李', '郭敬明', '韩寒']])
             done()
         }, 2000)
     })

@@ -78,7 +78,7 @@ lead to scattered logic and difficult code testing and maintenance.
     fo.run(2)
     // className ActionJustFn as nameSpace
     // getActionResult was key of result
-    globalThis.store["ActionJustFn/getActionResult"] // 7
+    globalThis.store["getActionResult"] // 7
 ```
 
 
@@ -113,7 +113,7 @@ lead to scattered logic and difficult code testing and maintenance.
     const fo = transformClassToFunctionPipeline(ActionJustFn, setState)
     fo.run(2)
     setTimeout(() => {
-        console.log(globalThis.store["FnReturnPromiseAction/getActionResult"])
+        console.log(globalThis.store["getActionResult"])
         // 7    
     }, 300)
 
@@ -181,8 +181,8 @@ lead to scattered logic and difficult code testing and maintenance.
         it('works', done => {
             fo.run('suzuki')
             setTimeout(() => {
-                expect(globalThis.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
-                expect(globalThis.store["PromiseIndependentAction/storeLocation"]).toBe('Japan')
+                expect(globalThis.store["storeMotoName"]).toBe('gsx250r')
+                expect(globalThis.store["storeLocation"]).toBe('Japan')
                 done()
             }, 1000)
         })
@@ -238,7 +238,7 @@ lead to scattered logic and difficult code testing and maintenance.
         it('works', done => {
             fo.run('suzuki')
             setTimeout(() => {
-                expect(global.store["PromiseDependOnBeforePromiseAction/getActionResult"]).toBe('180kg')
+                expect(global.store["getActionResult"]).toBe('180kg')
                 done()
             }, 1000)
     
@@ -247,4 +247,5 @@ lead to scattered logic and difficult code testing and maintenance.
 ```
 
 
-
+## Change Log
+- 0.1.8 —— Change actionState key from `className/methodName` to `methodName`

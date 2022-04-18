@@ -50,12 +50,12 @@ const fplOfFnReturnPromiseAction = transformClassToFunctionPipeline(FnReturnProm
 describe('Action.justFn', () => {
     it('pure fn', () => {
         fpl.run(2)
-        expect(globalThis.store["ActionJustFn/getActionResult"]).toBe(7)
+        expect(globalThis.store["getActionResult"]).toBe(7)
     })
     it('fn with fn return promise', done => {
         fplOfFnReturnPromiseAction.run(2)
         setTimeout(() => {
-            expect(globalThis.store["FnReturnPromiseAction/getActionResult"]).toBe(7)
+            expect(globalThis.store["getActionResult"]).toBe(7)
             done()
         }, 500)
 

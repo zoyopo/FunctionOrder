@@ -20,7 +20,6 @@ export enum InitKeys {
 
 export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<T>, setState?: SetState) {
     const instance = new cls()
-    const nameSpace = instance.constructor.name
     let methodNames = Reflect.ownKeys(Object.getPrototypeOf(instance))
     methodNames = methodNames.filter(methodName => !['constructor', KeyMethods.init].includes(methodName as string))
     let fplInstance = new fpl()
@@ -52,7 +51,7 @@ export default function createFunctionPipelineByClass<T extends TObj>(cls: Type<
                 const isMethodNameNeedStore = (_saveResultNames && _saveResultNames.includes(methodName as string)) || (methodName === KeyMethods.getActionResult)
                 //@ts-ignore
                 if (isMethodNameNeedStore && setState) {
-                    setState((prev: NormalObj) => ({...prev, [`${nameSpace}/${methodName as string}`]: val}))
+                    setState((prev: NormalObj) => ({...prev, [`${methodName as string}`]: val}))
                 }
                 return val
             })

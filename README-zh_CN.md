@@ -69,7 +69,7 @@
     fo.run(2) 
     // 类名ActionJustFn作为名称空间
     // getActionResult是最终结果的key
-    globalThis.store["ActionJustFn/getActionResult"] // 7
+    globalThis.store["getActionResult"] // 7
 ```
 
 ### 情景2：同步函数和异步函数
@@ -100,7 +100,7 @@
     const fo = transformClassToFunctionPipeline(ActionJustFn, setState)
     fo.run(2) 
     setTimeout(()=>{
-        console.log(globalThis.store["FnReturnPromiseAction/getActionResult"] )
+        console.log(globalThis.store["getActionResult"] )
         // 7    
     },300)
 
@@ -167,8 +167,8 @@
         it('works', done => {
             fo.run('suzuki')
             setTimeout(() => {
-                expect(globalThis.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
-                expect(globalThis.store["PromiseIndependentAction/storeLocation"]).toBe('Japan')
+                expect(globalThis.store["storeMotoName"]).toBe('gsx250r')
+                expect(globalThis.store["storeLocation"]).toBe('Japan')
                 done()
             }, 1000)
         })
@@ -218,7 +218,7 @@
         it('works', done => {
             fo.run('suzuki')
             setTimeout(() => {
-                expect(global.store["PromiseDependOnBeforePromiseAction/getActionResult"]).toBe('180kg')
+                expect(global.store["getActionResult"]).toBe('180kg')
                 done()
             }, 1000)
     
@@ -226,5 +226,6 @@
     })
 ```
 
-
+## 版本改动记录
+- 0.1.8 —— 将actionState的key从`className/methodName` 改为 `methodName`
 

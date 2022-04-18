@@ -53,8 +53,8 @@ describe('Action.promise independent', () => {
     it('works', done => {
         fpl.run('suzuki')
         setTimeout(() => {
-            expect(global.store["PromiseIndependentAction/storeMotoName"]).toBe('gsx250r')
-            expect(global.store["PromiseIndependentAction/getActionResult"]).toBe('Japan')
+            expect(global.store["storeMotoName"]).toBe('gsx250r')
+            expect(global.store["getActionResult"]).toBe('Japan')
             done()
         }, 1000)
     })

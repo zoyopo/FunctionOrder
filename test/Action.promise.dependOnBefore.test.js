@@ -45,7 +45,7 @@ describe('Action.promise dependent', () => {
     it('works', done => {
         fpl.run('suzuki')
         setTimeout(() => {
-            expect(global.store["PromiseDependOnBeforeAction/getActionResult"]).toBe('180kg')
+            expect(global.store["getActionResult"]).toBe('180kg')
             done()
         }, 1000)
 
