@@ -248,4 +248,4 @@ lead to scattered logic and difficult code testing and maintenance.
 
 
 ## Change Log
-- 0.1.8 —— Change actionState key from `className/methodName` to `methodName`
+- 0.1.9 —— Change actionState key from `className/methodName` to `methodName`

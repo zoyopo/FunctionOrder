@@ -227,5 +227,5 @@
 ```
 
 ## 版本改动记录
-- 0.1.8 —— 将actionState的key从`className/methodName` 改为 `methodName`
+- 0.1.9 —— 将actionState的key从`className/methodName` 改为 `methodName`
 
