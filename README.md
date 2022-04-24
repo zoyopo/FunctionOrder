@@ -49,7 +49,7 @@ lead to scattered logic and difficult code testing and maintenance.
 
 ## how to use
 
-### situation 1:all sync pure functions
+### The simplest use
 
 
 ```javascript
@@ -82,19 +82,23 @@ lead to scattered logic and difficult code testing and maintenance.
 ```
 
 
-### situation 2:  sync functions with async functions
+###  If we change `minus` and `Square` to asynchronous functions
 
 
 ```javascript
    import {transformClassToFunctionPipeline} from 'function-order'
-  
+
     class FnReturnPromiseAction {
         plus(num) {
             return 1 + num
         }
     
         square(num) {
-            return Math.pow(num, 2)
+            return new Promise((resolve => {
+                setTimeout(() => {
+                    resolve(Math.pow(num, 2))
+                },100)
+            }))
         }
     
         minus(num) {
@@ -118,12 +122,10 @@ lead to scattered logic and difficult code testing and maintenance.
     }, 300)
 
 ```
+`functionOrder` will automatically execute asynchronous functions in synchronous order for us
 
-
-### Situation3: flat async functions 
-
-
-
+###  Execute multiple parallel asynchronous functions when`run`
+1. The functions between parallel and asynchronous functions are still executed in turn
 ```javascript
     import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
   
@@ -189,62 +191,64 @@ lead to scattered logic and difficult code testing and maintenance.
     })
 ```
 
+We can declare `flatAsyncNames` in the `init` function and mark them as asynchronous functions executed in parallel. The functions after these functions will still be executed in turn. Now there are two results. We need to use two `keys` to store them.
 
+Therefore, we can declare the function that stores the value in `saveResultNames` and use it as a `key`.
 
-
-
-### Situation4:  async function depend on async function before
-
+2. An asynchronous function returns promises executed in parallel
 
 ```javascript
-    import {transformClassToFunctionPipeline} from 'function-order'
-  
-    class PromiseDependOnBeforePromiseAction {
-  
-    
-        getPopularMotoByBrand(brand) {
-            return new Promise((resolve => {
-                setTimeout(() => {
-                    const map = {
-                        'honda': 'honda cm300',
-                        'suzuki': 'gsx250r'
-                    }
-                    resolve(map[brand])
-                }, 30)
-    
-            }))
-        }
-    
-        getWeightOfMotoName(motoName) {
-            return new Promise((resolve => {
-                setTimeout(() => {
-                    const map = {
-                        'honda cm300': '170kg',
-                        'gsx250r': '180kg'
-                    }
-                    resolve(map[motoName])
-                }, 30)
-            }))
-        }
-    
-    }    
-    
-    const setState = (fn) => {
-        globalThis.store = fn(globalThis.store || {})
-    }
-    const fo = transformClassToFunctionPipeline(PromiseDependOnBeforePromiseAction, setState)
-    
-    describe('Action.promise dependent', () => {
-        it('works', done => {
-            fo.run('suzuki')
+
+class getMotoAction {
+    getBrandNameById(id) {
+        return new Promise((resolve => {
             setTimeout(() => {
-                expect(global.store["getActionResult"]).toBe('180kg')
-                done()
-            }, 1000)
-    
-        })
-    })
+                const map = {
+                    7: 'suzuki',
+                    8: 'honda'
+                }
+                resolve(map[id])
+            }, 30)
+
+        }))
+    }
+
+    getPopularMotoByBrand(brand) {
+        let p = new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'honda cm300',
+                    'suzuki': 'gsx250r'
+                }
+                resolve(map[brand])
+            }, 30)
+        }))
+
+        let p2 = new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'Japan',
+                    'suzuki': 'Japan',
+                    'BMW': 'Ger'
+                }
+                resolve(map[brand])
+            }, 30)
+        }))
+        return [p,p2]
+    }
+}
+const setState = (fn) => {
+    globalThis.store = fn(globalThis.store || {})
+}
+const fo = transformClassToFunctionPipeline(getMotoAction, setState)
+fo.run('suzuki')
+setTimeout(() => {
+    console.log(globalThis.store["getActionResult"])
+    // ["gsx250r","Japan"]        
+}, 300)
 ```
+
+
 
 
 ## Change Log

@@ -41,7 +41,7 @@
 
 ## 基本使用
 
-### 情景1：同步函数
+### 最简单的使用
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
@@ -72,18 +72,24 @@
     globalThis.store["getActionResult"] // 7
 ```
 
-### 情景2：同步函数和异步函数
+### 如果我们将`minus`,`square`改为异步函数
 
 ```javascript
     import {transformClassToFunctionPipeline} from 'function-order'
-  
+
     class FnReturnPromiseAction {
         plus(num) {
             return 1 + num
         }
+    
         square(num) {
-            return Math.pow(num, 2)
+            return new Promise((resolve => {
+                setTimeout(() => {
+                    resolve(Math.pow(num, 2))
+                },100)
+            }))
         }
+    
         minus(num) {
             return new Promise((resolve => {
                 setTimeout(() => {
@@ -105,11 +111,11 @@
     },300)
 
 ```
+`functionOrder`会自动为我们将异步函数按照同步顺序执行
 
 
-
-### Situation3: 扁平的异步函数
-
+### `run`的时候执行多个并行的异步函数
+1. 并行异步函数之间的函数依然依次执行
 ```javascript
     import {transformClassToFunctionPipeline,InitKeys} from 'function-order'
   
@@ -174,56 +180,59 @@
         })
     })
 ```
+我们可以在`init`函数中声明`flatAsyncNames`，标记其为并行执行的异步函数，在这些函数之后的函数，依然会依次执行。那么现在有两个结果，我们需要利用两个`key`来存储，
+所以我们可以在`saveResultNames`声明存储值的函数，并以此为`key`
 
-### Situation4:  异步函数依赖于前面的异步函数
-
+2. 一个异步函数返回并行执行的promises
 ```javascript
-    import {transformClassToFunctionPipeline} from 'function-order'
-  
-    class PromiseDependOnBeforePromiseAction {    
-        getPopularMotoByBrand(brand) {
-            return new Promise((resolve => {
-                setTimeout(() => {
-                    const map = {
-                        'honda': 'honda cm300',
-                        'suzuki': 'gsx250r'
-                    }
-                    resolve(map[brand])
-                }, 30)
-    
-            }))
-        }
-    
-        getWeightOfMotoName(motoName) {
-            return new Promise((resolve => {
-                setTimeout(() => {
-                    const map = {
-                        'honda cm300': '170kg',
-                        'gsx250r': '180kg'
-                    }
-                    resolve(map[motoName])
-                }, 30)
-            }))
-        }
-    
-    }
 
-
-    const setState = (fn) => {
-        globalThis.store = fn(globalThis.store || {})
-    }
-    const fo = transformClassToFunctionPipeline(PromiseDependOnBeforePromiseAction, setState)
-    
-    describe('Action.promise dependent', () => {
-        it('works', done => {
-            fo.run('suzuki')
+class getMotoAction {
+    getBrandNameById(id) {
+        return new Promise((resolve => {
             setTimeout(() => {
-                expect(global.store["getActionResult"]).toBe('180kg')
-                done()
-            }, 1000)
-    
-        })
-    })
+                const map = {
+                    7: 'suzuki',
+                    8: 'honda'
+                }
+                resolve(map[id])
+            }, 30)
+
+        }))
+    }
+
+    getPopularMotoByBrand(brand) {
+        let p = new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'honda cm300',
+                    'suzuki': 'gsx250r'
+                }
+                resolve(map[brand])
+            }, 30)
+        }))
+
+        let p2 = new Promise((resolve => {
+            setTimeout(() => {
+                const map = {
+                    'honda': 'Japan',
+                    'suzuki': 'Japan',
+                    'BMW': 'Ger'
+                }
+                resolve(map[brand])
+            }, 30)
+        }))
+        return [p,p2]
+    }
+}
+const setState = (fn) => {
+    globalThis.store = fn(globalThis.store || {})
+}
+const fo = transformClassToFunctionPipeline(getMotoAction, setState)
+fo.run('suzuki')
+setTimeout(() => {
+    console.log(globalThis.store["getActionResult"])
+    // ["gsx250r","Japan"]        
+}, 300)
 ```
 
 ## 版本改动记录
